@@ -21,12 +21,16 @@ module Abyss
 
     context "when dealing directly with an instance of DeepStore" do
 
-      subject { DeepStore.new }
+      subject { DeepStore.new("Foo") }
 
       describe "#initialize" do
 
         it 'sets its #configurations to an empty OrderedHash' do
           subject.configurations.should == ActiveSupport::OrderedHash.new
+        end
+
+        it 'knows its name' do
+          subject.name.should == 'Foo'
         end
 
       end

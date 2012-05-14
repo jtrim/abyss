@@ -38,9 +38,10 @@ module Abyss
   #
   class DeepStore
 
-    attr_accessor :configurations
+    attr_accessor :configurations, :name
 
-    def initialize #:nodoc:
+    def initialize(name="") #:nodoc:
+      @name = name
       @configurations = ActiveSupport::OrderedHash.new {}
     end
 
