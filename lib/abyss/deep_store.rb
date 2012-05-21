@@ -38,10 +38,11 @@ module Abyss
   #
   class DeepStore
 
-    attr_accessor :configurations
+    attr_accessor :configurations, :name
 
-    def initialize #:nodoc:
+    def initialize(name=nil) #:nodoc:
       @configurations = ActiveSupport::OrderedHash.new {}
+      @name = name
     end
 
     # If a block is passed, add a configuration group named `method_name`
@@ -57,7 +58,7 @@ module Abyss
       raise ArgumentError.new("Can't supply both a method argument and a block.") if block_given? && args.size > 0
 
       if block_given?
-        @configurations[method_name] ||= self.class.new
+        @configurations[method_name] ||= self.class.new(method_name)
         @configurations[method_name].instance_eval &block
       end
 
