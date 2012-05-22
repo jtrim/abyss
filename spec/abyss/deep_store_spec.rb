@@ -56,7 +56,7 @@ module Abyss
 
       describe "#method_missing behavior" do
 
-        context "when given a block and no args" do
+        context "when given a block" do
 
           let(:config_mock) { mock }
           let(:empty_proc)  { proc {} }
@@ -77,6 +77,15 @@ module Abyss
             subject.some_undefined_method &empty_proc
           end
 
+          context "with arguments" do
+
+            it "initializes a new configuration instance with the passed args" do
+              DeepStore.should_receive(:new).with(:some_undefined_method, "foo")
+              subject.some_undefined_method "foo", &empty_proc
+            end
+
+          end
+
         end
 
         context "with no arguments and no block" do
@@ -93,20 +102,6 @@ module Abyss
           it "calls #assign on itself, passing the method name and args list" do
             subject.should_receive(:assign).with(:some_undefined_method, ['foo'])
             subject.some_undefined_method 'foo'
-          end
-
-        end
-
-        describe "invalid scenarios" do
-
-          context "with an argument and a block" do
-
-            it "raises an InvalidArguemnt error" do
-              expect {
-                subject.some_undefined_method("foo") {}
-              }.to raise_error ArgumentError, /can't supply both a method argument and a block/i
-            end
-
           end
 
         end

@@ -55,11 +55,11 @@ module Abyss
     # Could be a DeepStore instance or some arbitrary configuration.
     #
     def method_missing(method_name, *args, &block)
-      raise ArgumentError.new("Can't supply both a method argument and a block.") if block_given? && args.size > 0
 
       if block_given?
-        @configurations[method_name] ||= self.class.new(method_name)
+        @configurations[method_name] ||= self.class.new(*args.unshift(method_name))
         @configurations[method_name].instance_eval &block
+        return @configurations[method_name]
       end
 
       return get(method_name) if args.length == 0
