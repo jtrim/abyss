@@ -56,6 +56,7 @@ module Abyss
     #
     def method_missing(method_name, *args, &block)
 
+      # TODO: document the block + arguments scenario when subclassing
       if block_given?
         @configurations[method_name] ||= self.class.new(*args.unshift(method_name))
         @configurations[method_name].instance_eval &block
