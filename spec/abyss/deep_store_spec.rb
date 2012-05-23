@@ -38,7 +38,7 @@ module Abyss
       describe "#get" do
 
         it "returns what is stored in its #configurations" do
-          subject.configurations = { thing: 'foo' }
+          subject.configurations = { :thing => 'foo' }
           subject.get(:thing).should == 'foo'
         end
 
