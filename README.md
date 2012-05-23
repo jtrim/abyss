@@ -1,5 +1,7 @@
 # Abyss
 
+[![Build Status](https://secure.travis-ci.org/jtrim/abyss.png)](http://travis-ci.org/jtrim/abyss)
+
 Ruby DSL for defining arbitrarily-deep configuration.
 
 ## Installation
