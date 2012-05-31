@@ -38,6 +38,7 @@ module Abyss
     path.split('/').inject(Abyss.configuration) do |acc, current_path_item|
       begin
         target = acc.send(current_path_item)
+        return false if target.nil?
       rescue NoMethodError
         return false
       end

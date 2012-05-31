@@ -40,7 +40,12 @@ describe Abyss do
 
     context "when the config doesn't exist" do
 
+      before do
+        Abyss.configure {}
+      end
+
       specify { Abyss.has?('three/levels/deep/here').should be_false }
+      specify { Abyss.has?('nope').should be_false }
 
     end
 
