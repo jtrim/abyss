@@ -1,4 +1,3 @@
-
 require 'spec_helper'
 
 describe Abyss do
@@ -19,5 +18,32 @@ describe Abyss do
 
   end
 
-end
+  describe '.has?' do
 
+    context "when given a path to an existing configuration" do
+
+      before do
+        Abyss.configure do
+          three do
+            levels do
+              deep do
+                here "hey!"
+              end
+            end
+          end
+        end
+      end
+
+      specify { Abyss.has?('three/levels/deep/here').should be_true }
+
+    end
+
+    context "when the config doesn't exist" do
+
+      specify { Abyss.has?('three/levels/deep/here').should be_false }
+
+    end
+
+  end
+
+end
