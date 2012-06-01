@@ -21,30 +21,76 @@ module Abyss
   #
   # Examples:
   #
-  # Abyss.configure do
-  #   three do
-  #     levels do
-  #       deep do
-  #         day "Monday"
+  #     Abyss.configure do
+  #       three do
+  #         levels do
+  #           deep do
+  #             day "Monday"
+  #           end
+  #         end
   #       end
   #     end
-  #   end
-  # end
   #
-  # Abyss.has?("three/levels/deep/day") #=> true
-  # Abyss.has?("non/existent/thing")    #=> false
+  #     Abyss.has?("three/levels/deep/day") #=> true
+  #     Abyss.has?("non/existent/thing")    #=> false
   #
   def self.has?(path)
+    get(path) ? true : false
+  end
+
+  # Gets a value at a given configuration path, slash-separated
+  #
+  # Returns: Target value or nil
+  #
+  # Examples:
+  #
+  #     Abyss.configure do
+  #       three do
+  #         levels do
+  #           deep do
+  #             day "Monday"
+  #           end
+  #         end
+  #       end
+  #     end
+  #
+  #     Abyss.get("three/levels/deep/day") #=> "Monday"
+  #     Abyss.has("non/existent/thing")    #=> nil
+  #
+  def self.get(path)
     path.split('/').inject(Abyss.configuration) do |acc, current_path_item|
       begin
         target = acc.send(current_path_item)
-        return false if target.nil?
+        return nil if target.nil?
       rescue NoMethodError
-        return false
+        return nil
       end
       target
     end
-    true
+  end
+
+  # Gets a value at a given configuration path, slash-separated. This version
+  # raises an error if the value isn't defined.
+  #
+  # Returns: Target value
+  #
+  # Examples:
+  #
+  #     Abyss.configure do
+  #       three do
+  #         levels do
+  #           deep do
+  #             day "Monday"
+  #           end
+  #         end
+  #       end
+  #     end
+  #
+  #     Abyss.get("three/levels/deep/day") #=> "Monday"
+  #     Abyss.has("non/existent/thing")    # Raises Abyss::Errors::NotFound
+  #
+  def self.get!(path)
+    get(path) || raise(Abyss::Errors::NotFound.new(path))
   end
 
 end
